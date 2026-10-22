@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#008069">
+  <title>Acropolis Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <noscript>This app needs JavaScript.</noscript>
+
+  <!-- shown while we check a saved login (also covers a sleeping server waking up) -->
+  <div id="splash" class="splash">
+    <div class="spinner"></div>
+    <div>Connecting…</div>
+  </div>
+
+  <!-- ===================== LOGIN / REGISTER ===================== -->
+  <section id="auth-screen" class="auth" hidden>
+    <div class="auth-card">
+      <div class="brand"><span class="brand-logo" data-icon="chat" data-size="30"></span></div>
+      <h1>Acropolis Chat</h1>
+      <p class="muted">Your roll number is your chat id.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-mode="login" role="tab">Sign in</button>
+        <button type="button" class="tab" data-mode="register" role="tab">Register</button>
+      </div>
+
+      <form id="auth-form">
+        <label>Roll number
+          <input id="rollNo" name="username" autocomplete="username" autocapitalize="characters"
+                 spellcheck="false" maxlength="20" required>
+        </label>
+        <label id="name-field" hidden>Your name
+          <input id="name" name="name" autocomplete="name" maxlength="40">
+        </label>
+        <label>Password
+          <input id="password" name="password" type="password" autocomplete="current-password" minlength="4" required>
+        </label>
+        <label class="check"><input type="checkbox" id="remember"> Keep me signed in on this device</label>
+
+        <p id="auth-error" class="error" role="alert"></p>
+        <p id="auth-note" class="note"></p>
+        <button id="auth-submit" class="primary" type="submit">Sign in</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== THE APP ===================== -->
+  <div id="app" class="app" data-view="list" hidden>
+
+    <aside class="sidebar">
+      <header class="side-header">
+        <div id="me-avatar"></div>
+        <div class="me-info"><strong id="me-name"></strong><span id="me-roll"></span></div>
+        <button id="btn-refresh" class="icon-btn" title="Refresh" aria-label="Refresh" data-icon="refresh"></button>
+        <button id="btn-logout" class="icon-btn" title="Log out" aria-label="Log out" data-icon="logout"></button>
+      </header>
+
+      <div class="search">
+        <label>
+          <span data-icon="search" data-size="20"></span>
+          <input id="search" type="search" placeholder="Search by name or roll number" autocomplete="off">
+        </label>
+      </div>
+
+      <ul id="chat-list" class="chat-list"></ul>
+    </aside>
+
+    <main class="chat">
+      <div id="empty-state" class="empty">
+        <span class="empty-logo" data-icon="chat" data-size="64"></span>
+        <h2>Acropolis Chat</h2>
+        <p>Pick a chat on the left, or say hello to the whole class.<br>
+           Messages live on the class server, so keep it friendly.</p>
+      </div>
+
+      <section id="conversation" class="conversation" hidden>
+        <header class="chat-header">
+          <button id="btn-back" class="icon-btn back" aria-label="Back" data-icon="back"></button>
+          <div id="chat-avatar"></div>
+          <div class="chat-title"><strong id="chat-name"></strong><span id="chat-sub"></span></div>
+        </header>
+
+        <div id="messages" class="messages" tabindex="0" aria-live="polite"></div>
+
+        <div id="edit-banner" class="edit-banner" hidden>
+          <div class="edit-text"><strong>Editing message</strong><span id="edit-preview"></span></div>
+          <button id="edit-cancel" class="icon-btn" type="button" aria-label="Cancel editing" data-icon="close"></button>
+        </div>
+
+        <form id="composer" class="composer">
+          <textarea id="input" rows="1" maxlength="500" placeholder="Type a message" aria-label="Message"></textarea>
+          <span id="counter" class="counter" hidden></span>
+          <button id="send" class="send" type="submit" aria-label="Send" data-icon="send" disabled></button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <div id="status" class="status" hidden></div>
+  <div id="menu" class="menu" hidden></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

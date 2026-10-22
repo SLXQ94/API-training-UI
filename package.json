@@ -1,0 +1,12 @@
+{
+  "name": "acropolis-chat-ui",
+  "version": "1.0.0",
+  "description": "Static file server for the Acropolis Chat UI (no dependencies)",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
