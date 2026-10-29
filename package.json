@@ -8,5 +8,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "node-cron": "^4.6.0"
   }
 }

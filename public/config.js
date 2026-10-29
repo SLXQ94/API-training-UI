@@ -6,7 +6,7 @@ window.CONFIG = {
 
   // Where the API lives. Use '' (empty) if this UI is served by the API itself (same origin).
   // API_BASE: 'https://acropolis-chat-api.onrender.com',
-  API_BASE: 'http://localhost:3000',
+  API_BASE: 'http://192.168.0.121:3000',
 
   // How often we ask the server "anything new?" (a hidden tab slows down to every 15 s).
   // Every student's browser does this, so it directly decides how much load your server gets.

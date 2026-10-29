@@ -18,6 +18,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const vm = require('vm');
+const cron = require('node-cron');
 
 // ---- settings: command line first, then environment, then defaults ----
 const args = {};
@@ -29,6 +30,7 @@ const PORT = Number(args.port || process.env.PORT || 3001);
 const API_BASE = (args.api || process.env.API_BASE || '').replace(/\/+$/, '');
 const API_PORT = args['api-port'] || process.env.API_PORT || '';
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const BASE_URL= process.env.BASE_URL;
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -124,6 +126,26 @@ server.on('error', (err) => {
     console.error(err);
   }
   process.exit(1);
+});
+
+// ✅ Cron job: Every 14 minutes, call /health (e.g., for uptime monitoring or keep-alive)
+// Runs at minutes: 0, 14, 28, 42 of every hour
+cron.schedule('*/10 * * * *', async () => {
+  const healthUrl = `${BASE_URL}/health`;
+  console.log(`[CRON] Calling health check: ${healthUrl}`);
+  try {
+    const res = await fetch(healthUrl, { 
+      timeout: 5000,
+    });
+    const status = res.status;
+    const body = await res.json().catch(() => ({}));
+    console.log(`[CRON] Health check response: ${status}`, body.status || '');
+  } catch (err) {
+    console.warn(`[CRON] Health check failed:`, err.message);
+  }
+}, {
+  scheduled: true,
+  timezone: 'Asia/Kolkata' // Optional: adjust as needed
 });
 
 // 0.0.0.0 = listen on every network interface, so other laptops and phones on the same network can connect
